@@ -14,7 +14,7 @@ public class Validator {
     // Validates the ISBN
     public static boolean isValidIsbn(String isbn){
         // Remove Hyphen and spaces
-        String cleanIsbn = isbn.replaceAll("\\s-", "");
+        String cleanIsbn = isbn.replaceAll("[\\s-]", "");
 
         // Length check
         if(cleanIsbn.length() != 13 || !cleanIsbn.matches("\\d{13}")){
@@ -27,7 +27,7 @@ public class Validator {
 
         // Checksum Calculation
         int total = 0;
-        for (int i = 0; i <= isbn.length(); i++) {
+        for (int i = 0; i <= cleanIsbn.length(); i++) {
             int digit = Character.getNumericValue(cleanIsbn.charAt(i));
 
             if (i % 2 == 0) {
