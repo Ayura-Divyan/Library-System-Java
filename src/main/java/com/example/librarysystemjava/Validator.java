@@ -1,5 +1,10 @@
 package com.example.librarysystemjava;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+
 public class Validator {
     // Validates the student ID
     public static boolean isValidStudentId(String id){
@@ -42,5 +47,21 @@ public class Validator {
     // Validate Availability
     public static boolean isValidAvailability(int availability, int copies) {
         return availability >= 0 && availability <= copies;
+    }
+
+    // Validate Date
+    public static boolean isValidDate(String date) {
+        if (date == null || date.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+
     }
 }
