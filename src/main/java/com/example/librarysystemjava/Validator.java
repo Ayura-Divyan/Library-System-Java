@@ -33,4 +33,9 @@ public class Validator {
         }
         return total % 10 == 0;
     }
+
+    // Validates the copies
+    public static boolean isValidCopies(int copies) {
+        return copies >= 0 && copies <= 2;
+    }
 }
