@@ -38,4 +38,9 @@ public class Validator {
     public static boolean isValidCopies(int copies) {
         return copies >= 0 && copies <= 2;
     }
+
+    // Validate Availability
+    public static boolean isValidAvailability(int availability, int copies) {
+        return availability >= 0 && availability <= copies;
+    }
 }
