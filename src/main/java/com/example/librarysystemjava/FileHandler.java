@@ -128,4 +128,27 @@ public class FileHandler {
             System.out.println("Error reading file");
         }
     }
+
+    // Getters for data retrieval
+    public List<Book> getValidBooks() {
+        return validBooks;
+    }
+    public List<String> getInvalidBooks() {
+        return invalidBooks;
+    }
+
+    public List<Student> getValidStudents() {
+        return  validStudents;
+    }
+    public List<String> getInvalidStudents() {
+        return invalidStudents;
+    }
+
+    public List<Transaction> getValidTransactions() {
+        return validTransactions;
+    }
+    public List<String> getInvalidTransactions() {
+        return invalidTransactions;
+    }
+
 }
