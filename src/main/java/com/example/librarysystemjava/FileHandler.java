@@ -39,7 +39,7 @@ public class FileHandler {
 
                         // Validation
                         if (Validator.isValidIsbn(isbn) && Validator.isValidCopies(copies) && Validator.isValidAvailability(availability, copies)) {
-                            validBooks.add(new Book(bookId, isbn, title, copies, availability, price));
+                            validBooks.add(new Book(bookId, isbn, title, copies, availability, price)); // Creates a book object
                         } else {
                             invalidBooks.add(line);
                         }
@@ -49,6 +49,41 @@ public class FileHandler {
                     }
                 } else {
                     invalidBooks.add(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        }
+    }
+
+    // Load Students method
+    public void loadStudents(String filePath) {
+        // Makes sure the lists are empty
+        validStudents.clear();
+        invalidStudents.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line = br.readLine(); // Used to skip the header row
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(","); // Adds book info to the book array
+                if (data.length == 2) { // matches the number of rows in csv file
+                    try {
+                        String  studentId = data[0].trim();
+                        String  firstName = data[1].trim();
+
+                        // Validation
+                        if (Validator.isValidStudentId(studentId)) {
+                            validStudents.add(new Student(studentId, firstName)); // Creates a book object
+                        } else {
+                            invalidStudents.add(line);
+                        }
+
+                    } catch (NumberFormatException e) {
+                        invalidStudents.add(line);
+                    }
+                } else {
+                    invalidStudents.add(line);
                 }
             }
         } catch (IOException e) {
