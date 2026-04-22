@@ -66,7 +66,7 @@ public class FileHandler {
             String line = br.readLine(); // Used to skip the header row
 
             while ((line = br.readLine()) != null) {
-                String[] data = line.split(","); // Adds book info to the book array
+                String[] data = line.split(","); // Adds student info to the book array
                 if (data.length == 2) { // matches the number of rows in csv file
                     try {
                         String  studentId = data[0].trim();
@@ -74,7 +74,7 @@ public class FileHandler {
 
                         // Validation
                         if (Validator.isValidStudentId(studentId)) {
-                            validStudents.add(new Student(studentId, firstName)); // Creates a book object
+                            validStudents.add(new Student(studentId, firstName)); // Creates a student object
                         } else {
                             invalidStudents.add(line);
                         }
@@ -84,6 +84,44 @@ public class FileHandler {
                     }
                 } else {
                     invalidStudents.add(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        }
+    }
+
+    // Load Transactions method
+    public void loadTransactions(String filePath) {
+        // Makes sure the lists are empty
+        validTransactions.clear();
+        invalidTransactions.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line = br.readLine(); // Used to skip the header row
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(","); // Adds transaction info to the book array
+                if (data.length == 5) { // matches the number of rows in csv file
+                    try {
+                        String  transactionId = data[0].trim();
+                        String date = data[1].trim();
+                        String bookId = data[2].trim();
+                        String studentId = data[3].trim();
+                        int type = Integer.parseInt(data[4].trim());
+
+                        // Validation
+                        if (Validator.isValidDate(date) && (type == 1 || type == 2)) {
+                            validTransactions.add(new Transaction(transactionId, date, bookId, studentId, type)); // Creates a transaction object
+                        } else {
+                            invalidTransactions.add(line);
+                        }
+
+                    } catch (NumberFormatException e) {
+                        invalidTransactions.add(line);
+                    }
+                } else {
+                    invalidTransactions.add(line);
                 }
             }
         } catch (IOException e) {
