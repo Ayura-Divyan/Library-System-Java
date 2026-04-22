@@ -10,4 +10,7 @@ public class FileHandler {
     private List<Transaction> validTransactions =  new ArrayList<>();
 
     // Invalid data lists
+    private List<String> invalidBooks =  new ArrayList<>();
+    private List<String> invalidStudents =  new ArrayList<>();
+    private List<String> invalidTransactions =  new ArrayList<>();
 }
