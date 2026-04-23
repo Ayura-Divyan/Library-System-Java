@@ -26,7 +26,19 @@ public class MainController {
 
     @FXML
     public void onImportClicked() {
-        System.out.println("Import button clicked");
+        System.out.println("Import button clicked"); // Console log
+
+        // Actually loading the page
+        try {
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("import-controller.fxml"));
+            javafx.scene.Node importView = fxmlLoader.loader();
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(importView);
+        } catch (java.io.IOException e) {
+            System.out.println("Error: loading import view: " +  e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
