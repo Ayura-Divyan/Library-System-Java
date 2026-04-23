@@ -36,12 +36,12 @@ public class ReportController {
     }
 
     @FXML
-    void onCalculateAverageClicked(ActionEvent event) {
+    public void onCalculateAverageClicked() {
         System.out.println("Calculating average cost...");
     }
 
     @FXML
-    void onGenerateReportClicked(ActionEvent event) {
-        System.out.println("Generating report for selec     ted date...");
+    public void onGenerateReportClicked() {
+        System.out.println("Generating report");
     }
 }

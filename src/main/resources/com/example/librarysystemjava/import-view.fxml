@@ -9,15 +9,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarysystemjava.ImportController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarysystemjava.ImportController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
       <Label text="Data Import &amp; Error Correction">
          <font>
-            <Font name="Consolas Bold" size="24.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
       <Button mnemonicParsing="false" onAction="#onLoadClicked" text="Load CSV Files">
@@ -27,14 +26,14 @@
       </Button>
       <Label text="Invalid Records Found">
          <font>
-            <Font name="Consolas" size="12.0" />
+            <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <ListView fx:id="invalidRecordsList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+      <ListView fx:id="invalidRecordsList" prefHeight="350.0" prefWidth="760.0" VBox.vgrow="ALWAYS" />
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
+            <TextField fx:id="editField" promptText="Select a record to edit..." HBox.hgrow="ALWAYS" />
             <Button mnemonicParsing="false" onAction="#onUpdateClicked" text="Update Record" />
-            <TextField fx:id="editField" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </children>

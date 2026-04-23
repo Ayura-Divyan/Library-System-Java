@@ -25,7 +25,7 @@ public class ImportController {
     }
 
     @FXML
-    void onLoadClicked(ActionEvent event) {
+    public void onLoadClicked() {
         System.out.println("Loading CSV File...");
 
         String booksPath = "data/books.csv";
@@ -46,17 +46,8 @@ public class ImportController {
     }
 
     @FXML
-    void onUpdateClicked(ActionEvent event) {
+    public void onUpdateClicked() {
         String correctedRecord = editField.getText();
-
-        if (correctedRecord != null && !correctedRecord.trim().isEmpty()) {
-            System.out.println("Updating record: " + correctedRecord);
-
-            int selectedIndex = invalidRecordsList.getSelectionModel().getSelectedIndex();
-            if (selectedIndex >= 0) {
-                invalidRecordsList.getItems().remove(selectedIndex);
-                editField.clear();
-            }
-        }
+        System.out.println("Updating record: " + correctedRecord);
     }
 }

@@ -8,32 +8,49 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.example.librarysystemjava.MainController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-   <children>
-      <BorderPane prefHeight="768.0" prefWidth="1024.0">
-         <left>
-            <VBox prefHeight="200.0" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <children>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="77.0" text="LIBRARY SYSTEM" textAlignment="CENTER" textOverrun="CLIP">
-                     <font>
-                        <Font name="Consolas Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnImport" mnemonicParsing="false" onAction="#onImportClicked" text="Import Data" />
-                  <Button fx:id="btnReport" mnemonicParsing="false" onAction="#onReportClicked" text="View Reports" />
-                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#onSearchClicked" text="Search Books" />
-               </children>
-            </VBox>
-         </left>
-         <center>
-            <StackPane fx:id="contentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </center>
-      </BorderPane>
-   </children>
-</VBox>
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarysystemjava.MainController">
+    <left>
+        <VBox prefHeight="768.0" prefWidth="220.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+            </padding>
+            <children>
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="LIBRARY SYSTEM" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+                <Button fx:id="btnImport" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onImportClicked" text="Import Data">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="btnReport" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onReportClicked" text="View Reports">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="btnSearch" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSearchClicked" text="Search Books">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                </Button>
+            </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="contentArea" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>
