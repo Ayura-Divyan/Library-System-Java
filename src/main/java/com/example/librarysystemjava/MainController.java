@@ -30,20 +30,29 @@ public class MainController {
 
         // Actually loading the page
         try {
-            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("import-controller.fxml"));
-            javafx.scene.Node importView = fxmlLoader.loader();
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("import-view.fxml"));
+            javafx.scene.Node importView = fxmlLoader.load();
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(importView);
         } catch (java.io.IOException e) {
-            System.out.println("Error: loading import view: " +  e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Critical Error: Failed to load report-view.fxml. Is the file missing?", e);
         }
     }
 
     @FXML
     public void onReportClicked() {
-        System.out.println("Export button clicked");
+        System.out.println("Export button clicked"); // Console log
+        // Actually loading the page
+        try {
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("report-view.fxml"));
+            javafx.scene.Node reportView = fxmlLoader.load();
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(reportView);
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Critical Error: Failed to load report-view.fxml. Is the file missing?", e);
+        }
     }
 
     @FXML
