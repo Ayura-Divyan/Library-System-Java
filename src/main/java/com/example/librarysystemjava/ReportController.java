@@ -38,7 +38,7 @@ public class ReportController {
 
     @FXML
     public void initialize() {
-        System.out.println("Report Screen loaded");
+        System.out.println("Report Screen loaded"); // Console log
 
         colTransId.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         colBookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));

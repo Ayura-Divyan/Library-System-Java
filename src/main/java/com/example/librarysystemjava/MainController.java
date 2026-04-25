@@ -42,7 +42,7 @@ public class MainController {
 
     @FXML
     public void onReportClicked() {
-        System.out.println("Export button clicked"); // Console log
+        System.out.println("Report gen button clicked"); // Console log
         // Actually loading the page
         try {
             javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("report-view.fxml"));
@@ -58,6 +58,15 @@ public class MainController {
     @FXML
     public void onSearchClicked() {
         System.out.println("Search button clicked");
+        try {
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("search-view.fxml"));
+            javafx.scene.Node searchView = fxmlLoader.load();
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(searchView);
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Critical Error: Failed to load report-view.fxml. Is the file missing?", e);
+        }
     }
 
 }
