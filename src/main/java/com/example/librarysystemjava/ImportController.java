@@ -17,20 +17,26 @@ public class ImportController {
     @FXML private ListView<String> transactionsListView;
     @FXML private TextField editField;
 
-    private FileHandler fileHandler = new FileHandler();
+    private FileHandler fileHandler = DataSingleton.getInstance().getFileHandler();
     private ListView<String> currentActiveList;
 
     @FXML
     public void initialize() {
-        // selection logic
+        // Restore data from Singleton if it exists
+        DataSingleton data = DataSingleton.getInstance();
+        booksListView.getItems().setAll(data.getAllBooks());
+        studentsListView.getItems().setAll(data.getAllStudents());
+        transactionsListView.getItems().setAll(data.getAllTransactions());
+
+        // Listeners and highlighting
         setupSelectionListener(booksListView);
         setupSelectionListener(studentsListView);
         setupSelectionListener(transactionsListView);
 
-        // Color highlighting logic
-        setupHighlighting(booksListView, fileHandler.getInvalidBooks());
-        setupHighlighting(studentsListView, fileHandler.getInvalidStudents());
-        setupHighlighting(transactionsListView, fileHandler.getInvalidTransactions());
+        // Use handler inside Singleton
+        setupHighlighting(booksListView, data.getFileHandler().getInvalidBooks());
+        setupHighlighting(studentsListView, data.getFileHandler().getInvalidStudents());
+        setupHighlighting(transactionsListView, data.getFileHandler().getInvalidTransactions());
     }
 
     @FXML
@@ -58,6 +64,12 @@ public class ImportController {
             populateList(studentsListView, studentFile);
             populateList(transactionsListView, transactionFile);
 
+            // Save to singleton
+            DataSingleton dataSafe = DataSingleton.getInstance();
+            dataSafe.getAllBooks().setAll(booksListView.getItems());
+            dataSafe.getAllStudents().setAll(studentsListView.getItems());
+            dataSafe.getAllTransactions().setAll(transactionsListView.getItems());
+
             System.out.println("Data imported successfully!");
         }
     }
@@ -78,6 +90,12 @@ public class ImportController {
                 fileHandler.updateRecordValidation(oldRecord, correctedRecord, activeInvalidList);
 
                 currentActiveList.getItems().set(selectedIndex, correctedRecord);
+
+                DataSingleton dataSafe = DataSingleton.getInstance();
+                dataSafe.getAllBooks().setAll(booksListView.getItems());
+                dataSafe.getAllStudents().setAll(studentsListView.getItems());
+                dataSafe.getAllTransactions().setAll(transactionsListView.getItems());
+
                 currentActiveList.refresh(); // Forces the color to update
                 editField.clear();
             }
