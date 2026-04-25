@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarysystemjava.ReportController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="System Reports">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Average Book Cost in Library: ">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblAverageCost" text="£0.00" textFill="#218c13">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" onAction="#onCalculateAverageClicked" text="Calculate Average" />
+            </children>
+        </HBox>
+        <Separator prefWidth="200.0" />
+        <Label text="Books Issued Report">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Select Issue Date:" />
+                <DatePicker fx:id="datePicker" promptText="Select Date" />
+                <Button mnemonicParsing="false" onAction="#onGenerateReportClicked" text="Generate Report" />
+            </children>
+        </HBox>
+        <TableView fx:id="reportTable" prefHeight="350.0" prefWidth="760.0" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colTransId" prefWidth="120.0" text="Transaction ID" />
+                <TableColumn fx:id="colBookId" prefWidth="120.0" text="Book ID" />
+                <TableColumn fx:id="colStudentId" prefWidth="120.0" text="Student ID" />
+                <TableColumn fx:id="colDate" prefWidth="150.0" text="Issue Date" />
+            </columns>
+        </TableView>
+    </children>
+</VBox>

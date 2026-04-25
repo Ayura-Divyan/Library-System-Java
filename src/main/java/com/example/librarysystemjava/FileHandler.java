@@ -111,7 +111,7 @@ public class FileHandler {
                         int type = Integer.parseInt(data[4].trim());
 
                         // Validation
-                        if (Validator.isValidDate(date) && (type == 1 || type == 2)) {
+                        if (Validator.isValidDate(date) && (type == 1 || type == 2) && Validator.isValidStudentId(studentId)) {
                             validTransactions.add(new Transaction(transactionId, date, bookId, studentId, type)); // Creates a transaction object
                         } else {
                             invalidTransactions.add(line);
@@ -149,6 +149,29 @@ public class FileHandler {
     }
     public List<String> getInvalidTransactions() {
         return invalidTransactions;
+    }
+
+    public void updateRecordValidation(String oldRecord, String newRecord, List<String> targetInvalidList) {
+        targetInvalidList.remove(oldRecord);
+
+        String[] data = newRecord.split(",");
+        boolean isValid = false;
+
+        if (data.length == 2) { // Student
+            isValid = Validator.isValidStudentId(data[0].trim());
+        } else if (data.length == 5) { // Transaction
+            isValid = Validator.isValidDate(data[1].trim());
+        } else if (data.length == 6) { // Book
+            try {
+                isValid = Validator.isValidIsbn(data[1].trim()) &&
+                        Validator.isValidCopies(Integer.parseInt(data[3].trim()));
+            } catch (Exception e) { isValid = false; }
+        }
+
+
+        if (!isValid) {
+            targetInvalidList.add(newRecord);
+        }
     }
 
 }

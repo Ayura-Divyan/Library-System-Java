@@ -18,23 +18,22 @@ public class Transaction {
     }
 
     // Getters
-    public String transactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public String date() {
+    public String getDate() {
         return date;
     }
 
-    public String bookId() {
+    public String getBookId() {
         return bookId;
     }
-
-    public String studentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public int type() {
+    public int getType() {
         return type;
     }
 
