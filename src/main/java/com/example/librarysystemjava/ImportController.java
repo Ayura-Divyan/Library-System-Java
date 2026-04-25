@@ -145,6 +145,30 @@ public class ImportController {
         }
     }
 
+    @FXML
+    public void onSaveClicked() {
+        javafx.stage.DirectoryChooser directoryChooser = new javafx.stage.DirectoryChooser();
+        directoryChooser.setTitle("Select Folder to Save Files");
+
+        File lastDir = DataSingleton.getInstance().getLastViewDirectory();
+        if (lastDir != null && lastDir.exists()) {
+            directoryChooser.setInitialDirectory(lastDir);
+        }
+
+        File selectedDir = directoryChooser.showDialog(null);
+
+        if (selectedDir != null) {
+            DataSingleton data = DataSingleton.getInstance();
+            fileHandler.saveAllData(
+                    selectedDir.getAbsolutePath(),
+                    data.getAllBooks(),
+                    data.getAllBooks(),
+                    data.getAllTransactions()
+            );
+            System.out.println("All files saved successfully to: " + selectedDir.getAbsolutePath());
+        }
+    }
+
     private void populateTable(TableView<String> tableView, File file) {
         tableView.getItems().clear();
         try {
