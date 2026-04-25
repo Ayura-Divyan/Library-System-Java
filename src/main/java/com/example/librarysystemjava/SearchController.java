@@ -63,7 +63,7 @@ public class SearchController {
             String bookTitle = book.getTitle().toLowerCase();
 
             if (isWildCard) {
-                if (bookTitle.startsWith(query)) {
+                if (bookTitle.startsWith(cleanQuery)) {
                     searchTable.getItems().add(book);
                 }
             } else {
@@ -72,7 +72,7 @@ public class SearchController {
                 }
             }
         }
-        System.out.println("Search Table Loaded\n\"Found \" + searchTable.getItems().size() + \" matching books.\"");
+        System.out.println("Search Table Loaded\nFound "  + searchTable.getItems().size() + " matching books.");
     }
 
     @FXML
