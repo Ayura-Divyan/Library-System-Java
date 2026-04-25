@@ -27,7 +27,7 @@ public class Validator {
 
         // Checksum Calculation
         int total = 0;
-        for (int i = 0; i <= cleanIsbn.length(); i++) {
+        for (int i = 0; i < cleanIsbn.length(); i++) {
             int digit = Character.getNumericValue(cleanIsbn.charAt(i));
 
             if (i % 2 == 0) {
