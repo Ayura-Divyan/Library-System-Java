@@ -17,115 +17,50 @@ public class FileHandler {
     private List<String> invalidStudents =  new ArrayList<>();
     private List<String> invalidTransactions =  new ArrayList<>();
 
-    //Load Books method
-    public void loadBooks(String filePath) {
-        // Makes sure the lists are empty
-        validBooks.clear();
-        invalidBooks.clear();
+    public void syncData(List<String> books, List<String> students, List<String> transactions) {
+        validBooks.clear(); invalidBooks.clear();
+        validStudents.clear(); invalidStudents.clear();
+        validTransactions.clear(); invalidTransactions.clear();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line = br.readLine(); // Used to skip the header row
-
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(","); // Adds book info to the book array
-                if (data.length == 6) { // matches the number of rows in csv file
-                    try {
-                        String bookId = data[0].trim();
-                        String isbn = data[1].trim();
-                        String title = data[2].trim();
-                        int copies = Integer.parseInt(data[3].trim());
-                        int availability = Integer.parseInt(data[4].trim());
-                        double price = Double.parseDouble(data[5].trim());
-
-                        // Validation
-                        if (Validator.isValidIsbn(isbn) && Validator.isValidCopies(copies) && Validator.isValidAvailability(availability, copies)) {
-                            validBooks.add(new Book(bookId, isbn, title, copies, availability, price)); // Creates a book object
-                        } else {
-                            invalidBooks.add(line);
-                        }
-
-                    } catch (NumberFormatException e) {
-                        invalidBooks.add(line);
+        //  Process Books
+        for (String line : books) {
+            String[] data = line.split(",", -1);
+            boolean isValid = false;
+            if (data.length == 6) {
+                try {
+                    String isbn = data[1].trim();
+                    int copies = Integer.parseInt(data[3].trim());
+                    if (Validator.isValidIsbn(isbn) && Validator.isValidCopies(copies)) {
+                        validBooks.add(new Book(data[0].trim(), isbn, data[2].trim(), copies,
+                                Integer.parseInt(data[4].trim()), Double.parseDouble(data[5].trim())));
+                        isValid = true;
                     }
-                } else {
-                    invalidBooks.add(line);
-                }
+                } catch (Exception e) {}
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file");
+            if (!isValid) invalidBooks.add(line);
         }
-    }
 
-    // Load Students method
-    public void loadStudents(String filePath) {
-        // Makes sure the lists are empty
-        validStudents.clear();
-        invalidStudents.clear();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line = br.readLine(); // Used to skip the header row
-
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(","); // Adds student info to the book array
-                if (data.length == 2) { // matches the number of rows in csv file
-                    try {
-                        String  studentId = data[0].trim();
-                        String  firstName = data[1].trim();
-
-                        // Validation
-                        if (Validator.isValidStudentId(studentId)) {
-                            validStudents.add(new Student(studentId, firstName)); // Creates a student object
-                        } else {
-                            invalidStudents.add(line);
-                        }
-
-                    } catch (NumberFormatException e) {
-                        invalidStudents.add(line);
-                    }
-                } else {
-                    invalidStudents.add(line);
-                }
+        // Process Students
+        for (String line : students) {
+            String[] data = line.split(",", -1);
+            boolean isValid = false;
+            if (data.length == 2 && Validator.isValidStudentId(data[0].trim())) {
+                validStudents.add(new Student(data[0].trim(), data[1].trim()));
+                isValid = true;
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file");
+            if (!isValid) invalidStudents.add(line);
         }
-    }
 
-    // Load Transactions method
-    public void loadTransactions(String filePath) {
-        // Makes sure the lists are empty
-        validTransactions.clear();
-        invalidTransactions.clear();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line = br.readLine(); // Used to skip the header row
-
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(","); // Adds transaction info to the book array
-                if (data.length == 5) { // matches the number of rows in csv file
-                    try {
-                        String  transactionId = data[0].trim();
-                        String date = data[1].trim();
-                        String bookId = data[2].trim();
-                        String studentId = data[3].trim();
-                        int type = Integer.parseInt(data[4].trim());
-
-                        // Validation
-                        if (Validator.isValidDate(date) && (type == 1 || type == 2) && Validator.isValidStudentId(studentId)) {
-                            validTransactions.add(new Transaction(transactionId, date, bookId, studentId, type)); // Creates a transaction object
-                        } else {
-                            invalidTransactions.add(line);
-                        }
-
-                    } catch (NumberFormatException e) {
-                        invalidTransactions.add(line);
-                    }
-                } else {
-                    invalidTransactions.add(line);
-                }
+        // Process Transactions
+        for (String line : transactions) {
+            String[] data = line.split(",", -1);
+            boolean isValid = false;
+            if (data.length == 5 && Validator.isValidDate(data[1].trim())) {
+                validTransactions.add(new Transaction(data[0].trim(), data[1].trim(), data[2].trim(),
+                        data[3].trim(), Integer.parseInt(data[4].trim())));
+                isValid = true;
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file");
+            if (!isValid) invalidTransactions.add(line);
         }
     }
 
