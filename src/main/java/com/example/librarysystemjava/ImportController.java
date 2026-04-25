@@ -1,9 +1,8 @@
 package com.example.librarysystemjava;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
@@ -12,31 +11,67 @@ import java.util.List;
 
 public class ImportController {
 
-    @FXML private ListView<String> booksListView;
-    @FXML private ListView<String> studentsListView;
-    @FXML private ListView<String> transactionsListView;
-    @FXML private TextField editField;
+    @FXML
+    private TableView<String> booksTable;
+    @FXML
+    private TableColumn<String, String> colBkId, colBkIsbn, colBkTitle, colBkCopies, colBkAvail, colBkPrice;
+
+    @FXML
+    private TableView<String> studentsTable;
+    @FXML
+    private TableColumn<String, String> colStuId, colStuName;
+
+    @FXML
+    private TableView<String> transactionsTable;
+    @FXML
+    private TableColumn<String, String> colTrId, colTrDate, colTrBkId, colTrStuId, colTrType;
+
+    @FXML
+    private TextField editField;
 
     private FileHandler fileHandler = DataSingleton.getInstance().getFileHandler();
-    private ListView<String> currentActiveList;
+    private TableView<String> currentActiveTable;
 
     @FXML
     public void initialize() {
-        // Restore data from Singleton if it exists
-        DataSingleton data = DataSingleton.getInstance();
-        booksListView.getItems().setAll(data.getAllBooks());
-        studentsListView.getItems().setAll(data.getAllStudents());
-        transactionsListView.getItems().setAll(data.getAllTransactions());
+        // 1. Bind the columns to split the CSV strings by commas
+        setupColumn(colBkId, 0);
+        setupColumn(colBkIsbn, 1);
+        setupColumn(colBkTitle, 2);
+        setupColumn(colBkCopies, 3);
+        setupColumn(colBkAvail, 4);
+        setupColumn(colBkPrice, 5);
 
-        // Listeners and highlighting
-        setupSelectionListener(booksListView);
-        setupSelectionListener(studentsListView);
-        setupSelectionListener(transactionsListView);
+        setupColumn(colStuId, 0);
+        setupColumn(colStuName, 1);
 
-        // Use handler inside Singleton
-        setupHighlighting(booksListView, data.getFileHandler().getInvalidBooks());
-        setupHighlighting(studentsListView, data.getFileHandler().getInvalidStudents());
-        setupHighlighting(transactionsListView, data.getFileHandler().getInvalidTransactions());
+        setupColumn(colTrId, 0);
+        setupColumn(colTrDate, 1);
+        setupColumn(colTrBkId, 2);
+        setupColumn(colTrStuId, 3);
+        setupColumn(colTrType, 4);
+
+        // Loading singleton data
+        DataSingleton dataSafe = DataSingleton.getInstance();
+        booksTable.getItems().setAll(dataSafe.getAllBooks());
+        studentsTable.getItems().setAll(dataSafe.getAllStudents());
+        transactionsTable.getItems().setAll(dataSafe.getAllTransactions());
+
+        // Invalid Selection and colour highlighting
+        setupSelectionListener(booksTable);
+        setupSelectionListener(studentsTable);
+        setupSelectionListener(transactionsTable);
+
+        setupHighlighting(booksTable, fileHandler.getInvalidBooks());
+        setupHighlighting(studentsTable, fileHandler.getInvalidStudents());
+        setupHighlighting(transactionsTable, fileHandler.getInvalidTransactions());
+    }
+
+    private void setupColumn(TableColumn<String, String> column, int index) {
+        column.setCellValueFactory(data -> {
+            String[] parts = data.getValue().split(",", -1);
+            return new SimpleStringProperty(parts.length > index ? parts[index].trim() : "");
+        });
     }
 
     @FXML
@@ -46,82 +81,80 @@ public class ImportController {
 
         fileChooser.setTitle("Select Books File");
         File bookFile = fileChooser.showOpenDialog(null);
-
         fileChooser.setTitle("Select Student File");
         File studentFile = fileChooser.showOpenDialog(null);
-
         fileChooser.setTitle("Select Transaction File");
         File transactionFile = fileChooser.showOpenDialog(null);
 
         if (bookFile != null && studentFile != null && transactionFile != null) {
-            // Run them through FileHandler
             fileHandler.loadBooks(bookFile.getAbsolutePath());
             fileHandler.loadStudents(studentFile.getAbsolutePath());
             fileHandler.loadTransactions(transactionFile.getAbsolutePath());
 
-            // Fill the tabs
-            populateList(booksListView, bookFile);
-            populateList(studentsListView, studentFile);
-            populateList(transactionsListView, transactionFile);
+            populateTable(booksTable, bookFile);
+            populateTable(studentsTable, studentFile);
+            populateTable(transactionsTable, transactionFile);
 
-            // Save to singleton
+            // Save data to singleton
             DataSingleton dataSafe = DataSingleton.getInstance();
-            dataSafe.getAllBooks().setAll(booksListView.getItems());
-            dataSafe.getAllStudents().setAll(studentsListView.getItems());
-            dataSafe.getAllTransactions().setAll(transactionsListView.getItems());
+            dataSafe.getAllBooks().setAll(booksTable.getItems());
+            dataSafe.getAllStudents().setAll(studentsTable.getItems());
+            dataSafe.getAllTransactions().setAll(transactionsTable.getItems());
 
-            System.out.println("Data imported successfully!");
+            System.out.println("Data imported into tables successfully!");
         }
     }
 
     @FXML
     public void onUpdateClicked() {
         String correctedRecord = editField.getText();
-        if (correctedRecord != null && currentActiveList != null) {
-            int selectedIndex = currentActiveList.getSelectionModel().getSelectedIndex();
+        if (correctedRecord != null && currentActiveTable != null) {
+            int selectedIndex = currentActiveTable.getSelectionModel().getSelectedIndex();
             if (selectedIndex >= 0) {
-                String oldRecord = currentActiveList.getItems().get(selectedIndex);
+                String oldRecord = currentActiveTable.getItems().get(selectedIndex);
 
                 List<String> activeInvalidList;
-                if (currentActiveList == booksListView) activeInvalidList = fileHandler.getInvalidBooks();
-                else if (currentActiveList == studentsListView) activeInvalidList = fileHandler.getInvalidStudents();
+                if (currentActiveTable == booksTable) activeInvalidList = fileHandler.getInvalidBooks();
+                else if (currentActiveTable == studentsTable) activeInvalidList = fileHandler.getInvalidStudents();
                 else activeInvalidList = fileHandler.getInvalidTransactions();
 
                 fileHandler.updateRecordValidation(oldRecord, correctedRecord, activeInvalidList);
+                currentActiveTable.getItems().set(selectedIndex, correctedRecord);
 
-                currentActiveList.getItems().set(selectedIndex, correctedRecord);
-
+                // Update the safe
                 DataSingleton dataSafe = DataSingleton.getInstance();
-                dataSafe.getAllBooks().setAll(booksListView.getItems());
-                dataSafe.getAllStudents().setAll(studentsListView.getItems());
-                dataSafe.getAllTransactions().setAll(transactionsListView.getItems());
+                dataSafe.getAllBooks().setAll(booksTable.getItems());
+                dataSafe.getAllStudents().setAll(studentsTable.getItems());
+                dataSafe.getAllTransactions().setAll(transactionsTable.getItems());
 
-                currentActiveList.refresh(); // Forces the color to update
+                currentActiveTable.refresh();
                 editField.clear();
             }
         }
     }
 
-    private void populateList(ListView<String> listView, File file) {
-        listView.getItems().clear();
+    private void populateTable(TableView<String> tableView, File file) {
+        tableView.getItems().clear();
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            if (!lines.isEmpty()) lines.remove(0); // drop header
-            listView.getItems().addAll(lines);
-        } catch (IOException e) { e.printStackTrace(); }
+            if (!lines.isEmpty()) lines.remove(0); // Remove header
+            tableView.getItems().addAll(lines);
+        } catch (IOException e) {
+            throw new RuntimeException("Critical Error: Failed to load report-view.fxml", e);
+        }
     }
 
-    private void setupSelectionListener(ListView<String> listView) {
-        listView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
+    private void setupSelectionListener(TableView<String> tableView) {
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
             if (newV != null) {
                 editField.setText(newV);
-                currentActiveList = listView;
+                currentActiveTable = tableView;
             }
         });
     }
 
-    private void setupHighlighting(ListView<String> listView, List<String> invalidList) {
-        listView.setCellFactory(lv -> new ListCell<String>() {
+    private void setupHighlighting(TableView<String> tableView, List<String> invalidList) {
+        tableView.setRowFactory(tv -> new TableRow<String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
