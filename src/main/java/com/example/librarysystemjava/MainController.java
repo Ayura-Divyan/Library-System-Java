@@ -42,7 +42,7 @@ public class MainController {
 
     @FXML
     public void onReportClicked() {
-        System.out.println("Export button clicked"); // Console log
+        System.out.println("Report gen button clicked"); // Console log
         // Actually loading the page
         try {
             javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("report-view.fxml"));
