@@ -1,15 +1,16 @@
 package com.example.librarysystemjava;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 public class DataSingleton {
     private static DataSingleton instance;
     private FileHandler fileHandler = new FileHandler();
 
-    private List<String> allBooks = new ArrayList<>();
-    private List<String> allStudents = new ArrayList<>();
-    private List<String> allTransactions = new ArrayList<>();
+    private ObservableList<String> allBooks = FXCollections.observableArrayList();
+    private ObservableList<String> allStudents = FXCollections.observableArrayList();
+    private ObservableList<String> allTransactions = FXCollections.observableArrayList();
 
     private DataSingleton() {}
 
@@ -20,7 +21,7 @@ public class DataSingleton {
 
     public FileHandler getFileHandler() {return fileHandler;}
 
-    public List<String> getAllBooks() {return allBooks;}
-    public List<String> getAllStudents() {return allStudents;}
-    public List<String> getAllTransactions() {return allTransactions;}
+    public ObservableList<String> getAllBooks() { return allBooks; }
+    public ObservableList<String> getAllStudents() { return allStudents; }
+    public ObservableList<String> getAllTransactions() { return allTransactions; }
 }

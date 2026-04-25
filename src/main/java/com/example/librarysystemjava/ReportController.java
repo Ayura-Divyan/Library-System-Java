@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.awt.event.ActionEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ReportController {
@@ -32,14 +33,14 @@ public class ReportController {
     @FXML
     private TableColumn<Transaction, String> colDate;
 
-    private FileHandler fileHandler = new FileHandler();
+    private FileHandler fileHandler = DataSingleton.getInstance().getFileHandler();
 
 
     @FXML
     public void initialize() {
         System.out.println("Report Screen loaded");
 
-        colTransId.setCellValueFactory(new PropertyValueFactory<>("transactioId"));
+        colTransId.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         colBookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         colStudentId.setCellValueFactory(new PropertyValueFactory<>("studentId"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -49,7 +50,6 @@ public class ReportController {
     public void onCalculateAverageClicked() {
         System.out.println("Calculating average cost...");
 
-        fileHandler.loadBooks("../data/book.csv");
         List<Book> books = fileHandler.getValidBooks();
 
         if (books.isEmpty()) {
@@ -74,10 +74,9 @@ public class ReportController {
             return;
         }
 
-        String selectedDate = datePicker.getValue().toString();
+        String selectedDate = datePicker.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         System.out.println("Generating report for: " + selectedDate);
 
-        fileHandler.loadTransactions("../data/transactions.csv");
         List<Transaction> allTransactions = fileHandler.getValidTransactions();
 
         reportTable.getItems().clear();
