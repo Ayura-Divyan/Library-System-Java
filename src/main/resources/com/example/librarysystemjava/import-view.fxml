@@ -22,8 +22,13 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-
-        <Button mnemonicParsing="false" onAction="#onLoadClicked" text="Load CSV Files" />
+      <HBox spacing="15.0">
+         <children>
+      
+              <Button mnemonicParsing="false" onAction="#onLoadClicked" text="Load CSV Files" />
+            <Button mnemonicParsing="false" onAction="#onSaveClicked" text="Save Data" />
+         </children>
+      </HBox>
 
         <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
             <tabs>

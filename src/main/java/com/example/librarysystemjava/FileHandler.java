@@ -165,13 +165,34 @@ public class FileHandler {
             try {
                 isValid = Validator.isValidIsbn(data[1].trim()) &&
                         Validator.isValidCopies(Integer.parseInt(data[3].trim()));
-            } catch (Exception e) { isValid = false; }
+            } catch (Exception e) {isValid = false;}
         }
-
-
         if (!isValid) {
             targetInvalidList.add(newRecord);
         }
     }
 
+    public void saveAllData(String dir, List<String> books, List<String> students, List<String> transactions) {
+        try {
+            // Save Books
+            java.io.PrintWriter bw = new java.io.PrintWriter(new java.io.FileWriter(dir + "/book.csv"));
+            bw.println("book_id,isbn,title,copies,availability,price");
+            for (String b : books) bw.println(b);
+            bw.close();
+
+            // Save Students
+            java.io.PrintWriter sw = new java.io.PrintWriter(new java.io.FileWriter(dir + "/student.csv"));
+            sw.println("student_id,first_name"); // Header
+            for (String s : students) sw.println(s);
+            sw.close();
+
+            // Save Transactions
+            java.io.PrintWriter tw = new java.io.PrintWriter(new java.io.FileWriter(dir + "/transaction.csv"));
+            tw.println("transaction_id,date,book_id,student_id,type"); // Header
+            for (String t : transactions) tw.println(t);
+            tw.close();
+        } catch (IOException e) {
+            System.out.println("Error saving file:  " + e.getMessage());
+        }
+    }
 }

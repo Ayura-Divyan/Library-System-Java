@@ -79,29 +79,41 @@ public class ImportController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
+        // MEMORY: Open the popup in the last visited directory (if it exists)
+        File lastDir = DataSingleton.getInstance().getLastViewDirectory();
+        if (lastDir != null && lastDir.exists()) {
+            fileChooser.setInitialDirectory(lastDir);
+        }
+
         fileChooser.setTitle("Select Books File");
         File bookFile = fileChooser.showOpenDialog(null);
-        fileChooser.setTitle("Select Student File");
-        File studentFile = fileChooser.showOpenDialog(null);
-        fileChooser.setTitle("Select Transaction File");
-        File transactionFile = fileChooser.showOpenDialog(null);
 
-        if (bookFile != null && studentFile != null && transactionFile != null) {
-            fileHandler.loadBooks(bookFile.getAbsolutePath());
-            fileHandler.loadStudents(studentFile.getAbsolutePath());
-            fileHandler.loadTransactions(transactionFile.getAbsolutePath());
+        if (bookFile != null) {
+            // MEMORY: Save this folder so the next popups open here automatically!
+            DataSingleton.getInstance().setLastViewDirectory(bookFile.getParentFile());
+            fileChooser.setInitialDirectory(bookFile.getParentFile());
 
-            populateTable(booksTable, bookFile);
-            populateTable(studentsTable, studentFile);
-            populateTable(transactionsTable, transactionFile);
+            fileChooser.setTitle("Select Student File");
+            File studentFile = fileChooser.showOpenDialog(null);
+            fileChooser.setTitle("Select Transaction File");
+            File transactionFile = fileChooser.showOpenDialog(null);
 
-            // Save data to singleton
-            DataSingleton dataSafe = DataSingleton.getInstance();
-            dataSafe.getAllBooks().setAll(booksTable.getItems());
-            dataSafe.getAllStudents().setAll(studentsTable.getItems());
-            dataSafe.getAllTransactions().setAll(transactionsTable.getItems());
+            if (studentFile != null && transactionFile != null) {
+                fileHandler.loadBooks(bookFile.getAbsolutePath());
+                fileHandler.loadStudents(studentFile.getAbsolutePath());
+                fileHandler.loadTransactions(transactionFile.getAbsolutePath());
 
-            System.out.println("Data imported into tables successfully!");
+                populateTable(booksTable, bookFile);
+                populateTable(studentsTable, studentFile);
+                populateTable(transactionsTable, transactionFile);
+
+                DataSingleton dataSafe = DataSingleton.getInstance();
+                dataSafe.getAllBooks().setAll(booksTable.getItems());
+                dataSafe.getAllStudents().setAll(studentsTable.getItems());
+                dataSafe.getAllTransactions().setAll(transactionsTable.getItems());
+
+                System.out.println("Data imported into tables successfully!");
+            }
         }
     }
 
@@ -130,6 +142,30 @@ public class ImportController {
                 currentActiveTable.refresh();
                 editField.clear();
             }
+        }
+    }
+
+    @FXML
+    public void onSaveClicked() {
+        javafx.stage.DirectoryChooser directoryChooser = new javafx.stage.DirectoryChooser();
+        directoryChooser.setTitle("Select Folder to Save Files");
+
+        File lastDir = DataSingleton.getInstance().getLastViewDirectory();
+        if (lastDir != null && lastDir.exists()) {
+            directoryChooser.setInitialDirectory(lastDir);
+        }
+
+        File selectedDir = directoryChooser.showDialog(null);
+
+        if (selectedDir != null) {
+            DataSingleton data = DataSingleton.getInstance();
+            fileHandler.saveAllData(
+                    selectedDir.getAbsolutePath(),
+                    data.getAllBooks(),
+                    data.getAllBooks(),
+                    data.getAllTransactions()
+            );
+            System.out.println("All files saved successfully to: " + selectedDir.getAbsolutePath());
         }
     }
 

@@ -12,6 +12,8 @@ public class DataSingleton {
     private ObservableList<String> allStudents = FXCollections.observableArrayList();
     private ObservableList<String> allTransactions = FXCollections.observableArrayList();
 
+    private java.io.File lastViewDirectory;
+
     private DataSingleton() {}
 
     public static DataSingleton getInstance() {
@@ -24,4 +26,7 @@ public class DataSingleton {
     public ObservableList<String> getAllBooks() { return allBooks; }
     public ObservableList<String> getAllStudents() { return allStudents; }
     public ObservableList<String> getAllTransactions() { return allTransactions; }
+
+    public java.io.File getLastViewDirectory() {return lastViewDirectory;}
+    public void setLastViewDirectory(java.io.File dir) {this.lastViewDirectory = dir;}
 }
