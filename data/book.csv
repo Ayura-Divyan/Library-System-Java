@@ -1,0 +1,6 @@
+book_id,isbn,title,copies,availability,price
+BK01,9780131103627,C Programming,2,2,25.50
+BK02,9780132350884,Clean Code,1,1,35.00
+BK03,9780596009205,Head First Design,2,1,42.75
+BK04,9780321125217,Refactoring,1,1,45.00
+BK05,9780134494166,Clean Architecture,2,2,38.20
