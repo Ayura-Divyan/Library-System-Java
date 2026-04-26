@@ -1,7 +1,5 @@
 package com.example.librarysystemjava;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,27 +82,6 @@ public class FileHandler {
     }
     public List<String> getInvalidTransactions() {
         return invalidTransactions;
-    }
-
-    public void updateRecordValidation(String oldRecord, String newRecord, List<String> targetInvalidList) {
-        targetInvalidList.remove(oldRecord);
-
-        String[] data = newRecord.split(",");
-        boolean isValid = false;
-
-        if (data.length == 2) { // Student
-            isValid = Validator.isValidStudentId(data[0].trim());
-        } else if (data.length == 5) { // Transaction
-            isValid = Validator.isValidDate(data[1].trim());
-        } else if (data.length == 6) { // Book
-            try {
-                isValid = Validator.isValidIsbn(data[1].trim()) &&
-                        Validator.isValidCopies(Integer.parseInt(data[3].trim()));
-            } catch (Exception e) {isValid = false;}
-        }
-        if (!isValid) {
-            targetInvalidList.add(newRecord);
-        }
     }
 
     public void saveAllData(String dir, List<String> books, List<String> students, List<String> transactions) {
