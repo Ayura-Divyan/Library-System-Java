@@ -28,7 +28,8 @@ public class FileHandler {
                 try {
                     String isbn = data[1].trim();
                     int copies = Integer.parseInt(data[3].trim());
-                    if (Validator.isValidIsbn(isbn) && Validator.isValidCopies(copies)) {
+                    int availability =  Integer.parseInt(data[4].trim());
+                    if (Validator.isValidIsbn(isbn) && Validator.isValidCopies(copies) && Validator.isValidAvailability(availability, copies)) {
                         validBooks.add(new Book(data[0].trim(), isbn, data[2].trim(), copies,
                                 Integer.parseInt(data[4].trim()), Double.parseDouble(data[5].trim())));
                         isValid = true;
